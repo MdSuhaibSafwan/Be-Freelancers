@@ -1,1 +1,1 @@
-web: gunicorn BeFreelancers.wsgi --log-file -
+web: gunicorn BeFreelancers.wsgi --log-file 
