@@ -6,4 +6,4 @@ def index(request):
     context = {
 
     }
-    return render(request, "", context)
+    return render(request, "main/index.html", context)
