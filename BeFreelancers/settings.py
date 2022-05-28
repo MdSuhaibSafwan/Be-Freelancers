@@ -18,6 +18,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     "main.apps.MainConfig",
+    'account.apps.AccountConfig',
 
     'rest_framework',
     'rest_framework.authtoken',
@@ -76,6 +77,8 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+AUTH_USER_MODEL = "account.User"
 
 LANGUAGE_CODE = 'en-us'
 
