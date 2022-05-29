@@ -21,6 +21,8 @@ INSTALLED_APPS = [
     'account.apps.AccountConfig',
     'job.apps.JobConfig',
     'gig.apps.GigConfig',
+    'contract.apps.ContractConfig',
+    'payment.apps.PaymentConfig',
 
     'rest_framework',
     'rest_framework.authtoken',
