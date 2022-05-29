@@ -28,17 +28,6 @@ class RegisterForm(forms.ModelForm):
             raise forms.ValidationError("email is taken")
         return email
 
-    def clean_username(self):
-        '''
-        Verify username is available.
-        '''
-        username = self.cleaned_data.get('username')
-        qs = User.objects.filter(username=username)
-        if qs.exists():
-            raise forms.ValidationError("username is taken")
-        return username
-
-
     def clean(self):
         '''
         Verify both passwords match.
@@ -92,7 +81,7 @@ class UserAdminChangeForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ['email', 'username', 'password', 'is_active', 'staff', 'superuser']
+        fields = ['email', 'password', 'is_active', 'staff', 'superuser']
 
     def clean_password(self):
         # Regardless of what the user provides, return the initial value.

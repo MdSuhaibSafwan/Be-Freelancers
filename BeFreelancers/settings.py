@@ -19,6 +19,7 @@ INSTALLED_APPS = [
 
     "main.apps.MainConfig",
     'account.apps.AccountConfig',
+    'job.apps.JobConfig',
 
     'rest_framework',
     'rest_framework.authtoken',

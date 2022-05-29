@@ -3,10 +3,11 @@ from django.contrib.auth.models import (
     BaseUserManager, AbstractBaseUser
 )
 from django.utils.translation import gettext_lazy as _
+from base_lib.model import BaseModel
 
 
 class UserManager(BaseUserManager):
-    def create_user(self, email, username, password=None):
+    def create_user(self, email, password=None):
         """
         Creates and saves a User with the given email and password.
         """
@@ -15,32 +16,29 @@ class UserManager(BaseUserManager):
 
         user = self.model(
             email=self.normalize_email(email),
-            username=username,
-        )
+                    )
         user.set_password(password)
         user.save(using=self._db)
         return user
 
-    def create_staffuser(self, email, username, password):
+    def create_staffuser(self, email, password):
         """
         Creates and saves a staff user with the given email and password.
         """
         user = self.create_user(
             email,
-            username,
             password=password,
         )
         user.staff = True
         user.save(using=self._db)
         return user
 
-    def create_superuser(self, email, username, password):
+    def create_superuser(self, email, password):
         """
         Creates and saves a superuser with the given email and password.
         """
         user = self.create_user(
             email,
-            username,
             password=password,
         )
         user.staff = True
@@ -55,7 +53,6 @@ class User(AbstractBaseUser):
         max_length=255,
         unique=True,
     )
-    username = models.CharField(_("Username"), max_length=15, unique=True, null=True, blank=False)
     full_name = models.CharField(_("Full Name"),max_length=100)
     is_active = models.BooleanField(default=True)
     staff = models.BooleanField(default=False)
@@ -67,7 +64,7 @@ class User(AbstractBaseUser):
     objects = UserManager()
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ["username", ] # Email & Password are required by default.
+    REQUIRED_FIELDS = [] # Email & Password are required by default.
 
     def get_full_name(self):
         # The user is identified by their email address
@@ -78,7 +75,7 @@ class User(AbstractBaseUser):
         return self.email
 
     def __str__(self):
-        return f"Email: {self.email}, Username: {self.username}"
+        return f"Email: {self.email}"
     def has_perm(self, perm, obj=None):
         "Does the user have a specific permission?"
         # Simplest possible answer: Yes, always
@@ -104,3 +101,28 @@ class User(AbstractBaseUser):
         "Is the user a superuser?"
         return self.superuser
 
+
+class Client(BaseModel):
+    user = models.OneToOneField(User, on_delete=models.SET_NULL, null=True, blank=False)
+    username = models.CharField(_("Username"), max_length=20, editable=False, unique=True)
+    client_type = models.CharField(max_length=100)
+    description = models.TextField(_("DESCRIBE YOURSELF"))
+    country = models.CharField(max_length=50)
+
+    verified = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.username
+
+
+class Developer(BaseModel):
+    user = models.OneToOneField(User, on_delete=models.SET_NULL, null=True, blank=False)
+    username = models.CharField(_("Username"), max_length=20, editable=False, unique=True)
+    client_type = models.CharField(max_length=100)
+    description = models.TextField(_("DESCRIBE YOURSELF"))
+    country = models.CharField(max_length=50)
+
+    verified = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.username
